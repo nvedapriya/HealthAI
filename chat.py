@@ -10,13 +10,15 @@ def display_patient_chat(*args, **kwargs):
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
 
-    user_input = st.text_input("You:", key="user_input")
+    user_input = st.text_input("You:", key="chat_input")
 
-    if st.button("Send") and user_input:
-        st.session_state.chat_history.append(("You", user_input))
-        response = generate_dummy_response(user_input)
-        st.session_state.chat_history.append(("HealthBot", response))
-        st.session_state.user_input = ""
+    if st.button("Send", key="send_button") and user_input:
+        if user_input.strip() != "":
+         st.session_state.chat_history.append(("You", user_input))
+         response = generate_dummy_response(user_input)
+         st.session_state.chat_history.append(("HealthBot", response))
+         st.session_state.user_input = ""
+         st.experimental_rerun()
 
     for speaker, msg in st.session_state.chat_history:
         st.markdown(f"**{speaker}:** {msg}")
